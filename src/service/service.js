@@ -17,7 +17,7 @@ export function createTodo(task) {
 }
 
 export function updateTodo(id, ModifiedTask) {
-     const todo = todo.find(t => t.id === id);
+     const todo = todos.find(t => t.id === id);
      if(!todo)return null;
      
      todo.task = ModifiedTask;

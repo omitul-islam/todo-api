@@ -24,7 +24,8 @@ export const deleteTask = ()=>{
 }
 
 export const EditTask = (req, res)=>{
-    const id = req.param;
+    const id = req.params.id;
+    console.log(id);
     const {modifiedTask} = req.body;
     const updatedTask = updateTodo(Number(id), modifiedTask);
     

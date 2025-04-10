@@ -6,6 +6,6 @@ const route = express.Router();
 route.post('/todos', addTask);
 route.get('/todos',  getTasks);
 route.put('/todos/:id', EditTask);
-route.post('/todos/:id', deleteTask);
+route.delete('/todos/:id', deleteTask);
 
 export const todoRoutes = route;

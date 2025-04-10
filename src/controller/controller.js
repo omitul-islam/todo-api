@@ -15,7 +15,7 @@ export const addTask = (req, res) => {
 }
 
 export const deleteTask = ()=>{
-    const id = req.param;
+    const id = req.params.id;
     const deletedTask = deleteTodo(Number(id));
     if(!deleteTask) {
       return res.status(404).json({message: "Todo not found for this id!"});  
@@ -27,10 +27,11 @@ export const EditTask = (req, res)=>{
     const id = req.params.id;
     console.log(id);
     const {modifiedTask} = req.body;
+    console.log(modifiedTask);
     const updatedTask = updateTodo(Number(id), modifiedTask);
     
     if(!updatedTask) {
       res.status(404).json({message:"No todo found for this id!"});  
     }
-    res.json({message:"Todo is updated!"}, updatedTask);
+    res.json({message:"Todo is updated!", updatedTask});
 }

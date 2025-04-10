@@ -1,7 +1,7 @@
-let todos = [];
-
+import { todos } from "../localTodosStore.js";
 
 export function getTodos() {
+    // console.log(todos);
     return todos;
 }
 
@@ -12,6 +12,7 @@ export function createTodo(task) {
         isCompleted: false
     };
     todos.push(newTask);
+    // console.log(todos);
     return newTask;
 }
 

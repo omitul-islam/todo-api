@@ -1,9 +1,10 @@
-import { getTodos, createTodo, deleteTodo, updateTodo } from "../service/service";
+import { getTodos, createTodo, deleteTodo, updateTodo } from "../service/service.js";
 
 
 export const getTasks = (req, res)=> {
      const todos = getTodos();
-     return todos;
+    //  console.log("todos",todos);
+     return res.status(200).json({message:"All the todos are fetched successfully!","Tasks": todos});
 }
 
 export const addTask = (req, res) => {

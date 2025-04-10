@@ -6,7 +6,7 @@ export const getTasks = (req, res)=> {
      if(todos.length === 0) {
        return res.json({message: "No todos to complete!"}); 
      }
-    //  console.log("todos",todos);
+     //console.log("todos",todos);
      return res.status(200).json({message:"All the todos are fetched successfully!","Tasks": todos});
 }
 
@@ -17,7 +17,7 @@ export const addTask = (req, res) => {
      }
      const newTask = createTodo(task);
 
-    return res.status(201).json(newTask);
+     return res.status(201).json(newTask);
 }
 
 export const deleteTask = (req, res)=>{
@@ -39,5 +39,6 @@ export const EditTask = (req, res)=>{
     if(!updatedTask) {
       res.status(404).json({message:"No todo found for this id!"});  
     }
+    else 
     res.json({message:"Todo is updated!", updatedTask});
 }

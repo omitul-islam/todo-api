@@ -16,10 +16,10 @@ export function createTodo(task) {
     return newTask;
 }
 
-export function updateTodo(id, ModifiedTask) {
+export function updateTodo(id, task) {
      const index = todos.findIndex(t => t.id === id);
      if(index === -1)return null;
-     const updatedTask = {...todos[index], task: ModifiedTask};
+     const updatedTask = {...todos[index], task: task};
      todos.splice(index, 1, updatedTask);     
      console.log(todos); 
      return updatedTask;

@@ -30,5 +30,5 @@ export function deleteTodo(id) {
 
     if(index === -1)return null;
     const RemoveTask = todos.splice(index, 1);
-    return removeTodo[0];
+    return RemoveTask[0];
 }

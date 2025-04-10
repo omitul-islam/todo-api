@@ -14,13 +14,13 @@ export const addTask = (req, res) => {
     return res.status(201).json(newTask);
 }
 
-export const deleteTask = ()=>{
+export const deleteTask = (req, res)=>{
     const id = req.params.id;
     const deletedTask = deleteTodo(Number(id));
-    if(!deleteTask) {
+    if(!deletedTask) {
       return res.status(404).json({message: "Todo not found for this id!"});  
     }
-    res.json({message: "This task is deleted!"}, deleteTask);      
+    res.json({message: "This task is deleted!",deleteTask});      
 }
 
 export const EditTask = (req, res)=>{

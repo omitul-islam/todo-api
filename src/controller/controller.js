@@ -49,7 +49,7 @@ export const deleteTask = (req, res)=>{
     res.json({message: "This task is deleted!",deletedTask});      
 }
 
-export const EditTask = (req, res)=>{
+export const editTask = (req, res)=>{
     const id = req.params.id;
     console.log(id);
     const {task, isCompleted} = req.body;

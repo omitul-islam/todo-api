@@ -211,7 +211,7 @@ Response:
 
 ## Bonus Features
 
-1. **Input Validation**: Task creation and updating are validated using the `Zod` library. It ensures that task names are strings with a minimum length of 10 characters.
+1. **Input Validation**: Task creation and updating are validated using the `Zod` library. It ensures that task names are strings with a minimum length of 10 characters and also it ensures that isCompleted takes a boolean value.
 2. **Custom Error Handling**: If any route encounters an error, it is passed to the custom error handler, which sends back appropriate error messages.
 
 ---

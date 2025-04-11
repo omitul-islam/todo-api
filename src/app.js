@@ -1,6 +1,7 @@
 import express from 'express';
 import { todoRoutes } from './route/route.js';
 import fs from 'fs';
+import { ErrorHandler } from './middleware/customErrorHandler.js';
 
 const app = express();
 
@@ -18,5 +19,6 @@ app.get('/',(req, res)=> {
    res.send('Api is working!');
  }
 )
+app.use(ErrorHandler);
 
 export default app;

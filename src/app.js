@@ -6,7 +6,7 @@ const app = express();
 
 app.use((req,res,next) => {
   //  console.log(`${req.method} request is occured to: ${req.url}`); 
-   const LogMessage = `at ${new Date()} -> ${req.method} is occured to: ${req.url}`;
+   const LogMessage = `at ${new Date()} -> ${req.method} is occured to: ${req.url}\n`;
    fs.appendFileSync('logs.txt', LogMessage, 'utf-8');
    next();
 })

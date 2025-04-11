@@ -1,4 +1,5 @@
 import { getTodos, createTodo, deleteTodo, updateTodo } from "../service/service.js";
+import { validation } from "../validation/validation.js";
 
 
 export const getTasks = (req, res)=> {
@@ -15,6 +16,15 @@ export const addTask = async(req, res) => {
     //  if(task === undefined) {
     //    return res.status(404).json({message:"Task is required to make a todo!"}); 
     //  }
+     const validatedData = validation.taskCreateSchema.safeParse({task});
+
+     if(!validatedData.success) {
+        return res.status(400).json({
+        message:"Validation Failed!",
+        error: validatedData.error
+      })
+     } 
+
      const newTask = createTodo(task);
 
      setTimeout(() => {
@@ -54,6 +64,20 @@ export const editTask = (req, res)=>{
     console.log(id);
     const {task, isCompleted} = req.body;
     console.log(task);
+
+    const validateData = {
+          task,
+          isCompleted
+    }
+     
+    const validatedData = validation.taskUpdateSchema.safeParse(validateData);
+    if(!validatedData.success) {
+      return res.status(400).json({
+        message:"Validation Failed!",
+        error: validatedData.error
+      })
+    } 
+
     const updatedTask = updateTodo(Number(id), task, isCompleted);
     
     if(!updatedTask) {

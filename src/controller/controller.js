@@ -10,14 +10,34 @@ export const getTasks = (req, res)=> {
      return res.status(200).json({message:"All the todos are fetched successfully!","Tasks": todos});
 }
 
-export const addTask = (req, res) => {
+export const addTask = async(req, res) => {
      const {task} = req.body
-     if(task === undefined) {
-       return res.status(404).json({message:"Task is required to make a todo!"}); 
-     }
+    //  if(task === undefined) {
+    //    return res.status(404).json({message:"Task is required to make a todo!"}); 
+    //  }
      const newTask = createTodo(task);
 
-     return res.status(201).json(newTask);
+     setTimeout(() => {
+        console.log(`Task ${newTask.task} created with the id: ${newTask.id}`);
+     }, 0);
+
+     const taskPromise = new Promise((resolve, reject) => {
+           setTimeout(() => {
+              if(!newTask.task) {
+                return reject({status:404,message:"There is no task data to assign!"});
+              }
+              resolve({task: newTask});
+           }, 200); 
+     });
+
+     try {
+        const saveTask = await taskPromise;
+        return res.status(201).json({message:"Task created succesfully!", task:saveTask.task});
+     } 
+     catch (error) {
+        return res.status(500).json({message:"Error occured when saving task",error});
+     }
+ 
 }
 
 export const deleteTask = (req, res)=>{

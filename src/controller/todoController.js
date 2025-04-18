@@ -2,9 +2,9 @@ import { getTodos, createTodo, deleteTodo, updateTodo } from "../service/todoSer
 import { validation } from "../validation/todoValidation.js";
 
 
-export const getTasks = (req, res,next)=> {
+export const getTasks = async(req, res,next)=> {
     try {
-      const todos = getTodos();
+      const todos = await getTodos();
       if(todos.length === 0) {
         return res.json({message: "No todos to complete!"}); 
       }
@@ -30,9 +30,10 @@ export const addTask = async(req, res, next) => {
       throw error;
      } 
 
-     const newTask = createTodo(task);
+     const newTask = await createTodo(task);
+     console.log(newTask);
      setTimeout(() => {
-        console.log(`Task ${newTask.task} created with the id: ${newTask.id}`);
+        console.log(`Task ${newTask.task} created with the id: ${newTask._id}`);
      }, 0);
 
      const taskPromise = new Promise((resolve, reject) => {
@@ -53,10 +54,10 @@ export const addTask = async(req, res, next) => {
      }
 }
 
-export const deleteTask = (req, res, next)=>{
+export const deleteTask = async(req, res, next)=>{
   try {
     const id = req.params.id;
-    const deletedTask = deleteTodo(Number(id));
+    const deletedTask = await deleteTodo(id);
     if(!deletedTask) {
       const error = new Error("Todo not found for this id!");
       error.status = 404;
@@ -69,10 +70,10 @@ export const deleteTask = (req, res, next)=>{
    
 }
 
-export const editTask = (req, res, next)=>{
+export const editTask = async(req, res, next)=>{
    try {
     const id = req.params.id;
-    console.log(id);
+    console.log(id)
     const {task, isCompleted} = req.body;
     console.log(task);
 
@@ -90,7 +91,7 @@ export const editTask = (req, res, next)=>{
       throw error;
     } 
 
-    const updatedTask = updateTodo(Number(id), task, isCompleted);
+    const updatedTask = await updateTodo(id, task, isCompleted);
     
     if(!updatedTask) {
       const error = new Error("No todo found for this id!");

@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-const {schema, model} = mongoose;
+const {Schema, model} = mongoose;
 
-const todoSchema = new schema({
+const todoSchema = new Schema({
      task: {
           type: String,
           required: [true,'Task is required'],
@@ -19,4 +19,4 @@ const todoSchema = new schema({
 });
 
 const todoModel = model('Todo', todoSchema);
-export default todoModel
+export default todoModel;

@@ -1,5 +1,5 @@
-import { getTodos, createTodo, deleteTodo, updateTodo } from "../service/service.js";
-import { validation } from "../validation/validation.js";
+import { getTodos, createTodo, deleteTodo, updateTodo } from "../service/todoService.js";
+import { validation } from "../validation/todoValidation.js";
 
 
 export const getTasks = (req, res,next)=> {

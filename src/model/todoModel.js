@@ -5,8 +5,9 @@ const {schema, model} = mongoose;
 const todoSchema = new schema({
      task: {
           type: String,
-          required: true,
+          required: [true,'Task is required'],
           trim:true,
+          minlength: [10, 'Task must be at least 10 characters long'],
      },
      isCompleted: {
           type: Boolean,
@@ -17,4 +18,5 @@ const todoSchema = new schema({
     timestamps: true,
 });
 
-export default model('Todo', todoSchema);
+const todoModel = model('Todo', todoSchema);
+export default todoModel

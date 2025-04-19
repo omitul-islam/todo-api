@@ -51,11 +51,12 @@ export const getTodos = async (userId) => {
     return await todoModel.find({user:userId});
 }
 
-export const  createTodo = async({task, userId}) => {
+export const  createTodo = async({task, userId,attachment}) => {
     const newTask = {
         task,
         isCompleted: false,
-        user:userId
+        user:userId,
+        attachment
     };
     const todo = new todoModel(newTask);
     console.log(todo);

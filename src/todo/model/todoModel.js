@@ -17,7 +17,12 @@ const todoSchema = new Schema({
      user: {
           type:mongoose.Schema.Types.ObjectId,
           ref:'User',
-     }
+     },
+
+     attachment: {
+          type: String,
+          default: null,
+     },
     
 }, {
     timestamps: true,

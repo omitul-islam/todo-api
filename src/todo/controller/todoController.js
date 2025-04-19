@@ -18,7 +18,7 @@ export const getTasks = async(req, res,next)=> {
 
 export const addTask = async(req, res, next) => {
   try{
-     const {task} = req.body
+     const {task} = req.body;
     //  if(task === undefined) {
     //    return res.status(404).json({message:"Task is required to make a todo!"}); 
     //  }
@@ -31,7 +31,8 @@ export const addTask = async(req, res, next) => {
       throw error;
      } 
      const userId = req.user.id;
-     const newTask = await createTodo({task, userId});
+     const attachment = req.file ? req.file.path : null;
+     const newTask = await createTodo({task, userId, attachment});
      console.log(newTask);
      setTimeout(() => {
         console.log(`Task ${newTask.task} created with the id: ${newTask._id}`);

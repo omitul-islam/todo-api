@@ -3,6 +3,7 @@ import { todoRoutes } from './todo/route/todoRoute.js';
 import fs from 'fs';
 import { ErrorHandler } from './middleware/customErrorHandler.js';
 import { authRoutes } from './auth/auth.route.js';
+import { authenticateUser } from './utils/jwtUtils.js';
 
 const app = express();
 
@@ -14,8 +15,9 @@ app.use((req,res,next) => {
 })
 
 app.use(express.json());
-app.use('/api',todoRoutes);
 app.use('/api',authRoutes);
+app.use('/api',authenticateUser,todoRoutes);
+
 
 app.get('/',(req, res)=> {
    res.send('Api is working!');

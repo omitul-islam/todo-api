@@ -4,7 +4,8 @@ import { validation } from "../validation/todoValidation.js";
 
 export const getTasks = async(req, res,next)=> {
     try {
-      const todos = await getTodos();
+      const userId = req.user.id;
+      const todos = await getTodos(userId);
       if(todos.length === 0) {
         return res.json({message: "No todos to complete!"}); 
       }
@@ -29,8 +30,8 @@ export const addTask = async(req, res, next) => {
       error.error = validatedData.error;
       throw error;
      } 
-
-     const newTask = await createTodo(task);
+     const userId = req.user.id;
+     const newTask = await createTodo({task, userId});
      console.log(newTask);
      setTimeout(() => {
         console.log(`Task ${newTask.task} created with the id: ${newTask._id}`);

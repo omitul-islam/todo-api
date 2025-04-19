@@ -47,14 +47,15 @@
 
 
 import todoModel from "../model/todoModel.js";
-export const getTodos = async () => {
-    return await todoModel.find();
+export const getTodos = async (userId) => {
+    return await todoModel.find({user:userId});
 }
 
-export const  createTodo = async(task) => {
+export const  createTodo = async({task, userId}) => {
     const newTask = {
         task,
-        isCompleted: false
+        isCompleted: false,
+        user:userId
     };
     const todo = new todoModel(newTask);
     console.log(todo);

@@ -1,15 +1,24 @@
 import { getTodos, createTodo, deleteTodo, updateTodo } from "../service/todoService.js";
 import { validation } from "../validation/todoValidation.js";
-
+import client from "../redis/redis.js";
 
 export const getTasks = async(req, res,next)=> {
     try {
       const userId = req.user.id;
+      const cache = `${process.env.REDIS_CACHE_KEY}:${userId}`;
+      const cachedTodos = await client.get(cache);
+      if(cachedTodos) {
+        console.log("Cache found!");
+        return res.status(200).json({message:"All the todos are fetched successfully!", Tasks: JSON.parse(cachedTodos)});
+      }
+
       const todos = await getTodos(userId);
       if(todos.length === 0) {
         return res.json({message: "No todos to complete!"}); 
       }
       //console.log("todos",todos);
+      await client.setEx(cache,3600,JSON.stringify(todos));
+
       return res.status(200).json({message:"All the todos are fetched successfully!",Tasks: todos});
     } catch (error) {
       next(error);
@@ -33,6 +42,7 @@ export const addTask = async(req, res, next) => {
      const userId = req.user.id;
      const attachment = req.file ? req.file.path : null;
      const newTask = await createTodo({task, userId, attachment});
+
      console.log(newTask);
      setTimeout(() => {
         console.log(`Task ${newTask.task} created with the id: ${newTask._id}`);
@@ -49,6 +59,10 @@ export const addTask = async(req, res, next) => {
 
    
         const saveTask = await taskPromise;
+
+        const cache = `${process.env.REDIS_CACHE_KEY}:${userId}`;
+        await client.del(cache);
+
         return res.status(201).json({message:"Task created succesfully!", task:saveTask.task});
     }
      catch (error) {
@@ -65,6 +79,11 @@ export const deleteTask = async(req, res, next)=>{
       error.status = 404;
       throw error; 
     }
+    const saveTask = await taskPromise;
+
+    const cache = `${process.env.REDIS_CACHE_KEY}:${id}`;
+    await client.del(cache);
+
     res.json({message: "This task is deleted!",deletedTask});     
   } catch (error) {
     next(error);
@@ -100,6 +119,10 @@ export const editTask = async(req, res, next)=>{
       error.status = 404;
       throw error;
     }
+
+    const cache = `${process.env.REDIS_CACHE_KEY}:${id}`;
+    await client.del(cache);
+
     res.json({message:"Todo is updated!", updatedTask});
    } catch (error) {
      next(error);

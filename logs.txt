@@ -340,3 +340,14 @@ at 2025-04-22T14:00:50.162Z -> POST is occured to: /api/auth/login
 at 2025-04-22T14:01:47.491Z -> POST is occured to: /api/auth/login
 at 2025-04-22T14:01:53.032Z -> POST is occured to: /api/auth/login
 at 2025-04-22T14:05:49.741Z -> DELETE is occured to: /api/profile
+at 2025-04-22T14:15:30.070Z -> POST is occured to: /auth/login
+at 2025-04-22T14:15:38.382Z -> POST is occured to: /api/auth/login
+at 2025-04-22T14:16:10.203Z -> POST is occured to: /api/auth/login
+at 2025-04-22T14:16:27.153Z -> POST is occured to: /api/auth/login
+at 2025-04-22T14:17:29.550Z -> POST is occured to: /api/auth/login
+at 2025-04-22T14:18:14.314Z -> POST is occured to: /api/auth/login
+at 2025-04-22T14:19:15.223Z -> POST is occured to: /api/auth/login
+at 2025-04-22T14:19:50.609Z -> POST is occured to: /api/auth/login
+at 2025-04-22T14:22:25.873Z -> POST is occured to: /api/auth/login
+at 2025-04-22T14:23:11.313Z -> POST is occured to: /api/auth/login
+at 2025-04-22T14:23:21.436Z -> POST is occured to: /api/auth/login

@@ -23,6 +23,10 @@ const todoSchema = new Schema({
           type: String,
           default: null,
      },
+     archived: {
+          type: Boolean,
+          default: false,
+     },
     
 }, {
     timestamps: true,

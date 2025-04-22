@@ -1,6 +1,8 @@
 import { getTodos, createTodo, deleteTodo, updateTodo } from "../service/todoService.js";
 import { validation } from "../validation/todoValidation.js";
 import client from "../redis/redis.js";
+import reminderQueue from "../../utils/reminder.js";
+import archiveQueue from "../../utils/archiveSchedule.js";
 
 export const getTasks = async(req, res,next)=> {
     try {
@@ -39,6 +41,7 @@ export const addTask = async(req, res, next) => {
       error.error = validatedData.error;
       throw error;
      } 
+     console.log(req.body)
      const userId = req.user.id;
      const attachment = req.file ? req.file.path : null;
      const newTask = await createTodo({task, userId, attachment});
@@ -59,6 +62,18 @@ export const addTask = async(req, res, next) => {
 
    
         const saveTask = await taskPromise;
+        const taskId = saveTask.task._id;
+        await reminderQueue.add(
+          {
+            taskId,
+            email: req.user.email, 
+            subject: 'Reminder: You created a task 10 seconds ago!',
+            body: `Task: "${task}" is still incompleted. Check it!`,
+          },
+          {
+            delay: process.env.REMINDER_DELAY,
+          }
+        );
 
         const cache = `${process.env.REDIS_CACHE_KEY}:${userId}`;
         await client.del(cache);
@@ -118,6 +133,17 @@ export const editTask = async(req, res, next)=>{
       const error = new Error("No todo found for this id!");
       error.status = 404;
       throw error;
+    }
+
+    if(updatedTask.isCompleted && !updatedTask.archived) {
+      await archiveQueue.add(
+        {
+          taskId: updatedTask._id,
+        },
+        {
+          delay: parseInt(process.env.ARCHIVE_DELAY),
+        }
+      );
     }
 
     const cache = `${process.env.REDIS_CACHE_KEY}:${id}`;

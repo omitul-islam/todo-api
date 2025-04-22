@@ -48,7 +48,7 @@
 
 import todoModel from "../model/todoModel.js";
 export const getTodos = async (userId) => {
-    return await todoModel.find({user:userId});
+    return await todoModel.find({user:userId, archived:false});
 }
 
 export const  createTodo = async({task, userId,attachment}) => {

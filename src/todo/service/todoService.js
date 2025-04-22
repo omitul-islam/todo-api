@@ -80,9 +80,9 @@ export const  updateTodo = async(id, task, isCompleted) => {
      return await todo.save();
 }
 
-export function deleteTodo(id) {
+export async function deleteTodo(id) {
     const todo = todoModel.findById(id);
     if(!todo)return null;
-    return todoModel.findByIdAndDelete(id);
+    return await todoModel.findByIdAndDelete(id);
 }
 

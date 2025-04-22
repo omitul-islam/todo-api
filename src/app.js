@@ -4,6 +4,8 @@ import fs from 'fs';
 import { ErrorHandler } from './middleware/customErrorHandler.js';
 import { authRoutes } from './auth/auth.route.js';
 import { authenticateUser } from './utils/jwtUtils.js';
+import { adminRoutes } from './admin/admin.route.js';
+import { isAdmin } from './utils/isAdmin.js';
 
 const app = express();
 
@@ -17,6 +19,7 @@ app.use((req,res,next) => {
 app.use(express.json());
 app.use('/api',authRoutes);
 app.use('/api',authenticateUser,todoRoutes);
+app.use('/api',authenticateUser, isAdmin,adminRoutes)
 
 
 app.get('/',(req, res)=> {

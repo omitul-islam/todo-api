@@ -1,8 +1,8 @@
 import { getTodos, createTodo, deleteTodo, updateTodo } from "../service/todoService.js";
-import { validation } from "../validation/todoValidation.js";
 import client from "../redis/redis.js";
 import reminderQueue from "../../utils/reminder.js";
 import archiveQueue from "../../utils/archiveSchedule.js";
+import { validation } from "../../validation/todoValidation.js";
 
 export const getTasks = async(req, res,next)=> {
     try {
@@ -15,7 +15,7 @@ export const getTasks = async(req, res,next)=> {
       }
 
       const todos = await getTodos(userId);
-      if(todos.length === 0) {
+      if(!todos || todos.length === 0) {
         return res.json({message: "No todos to complete!"}); 
       }
       //console.log("todos",todos);
@@ -88,15 +88,15 @@ export const addTask = async(req, res, next) => {
 export const deleteTask = async(req, res, next)=>{
   try {
     const id = req.params.id;
+    const userId = req.user.id;
+    console.log(userId)
     const deletedTask = await deleteTodo(id);
     if(!deletedTask) {
       const error = new Error("Todo not found for this id!");
       error.status = 404;
       throw error; 
     }
-    const saveTask = await taskPromise;
-
-    const cache = `${process.env.REDIS_CACHE_KEY}:${id}`;
+    const cache = `${process.env.REDIS_CACHE_KEY}:${userId}`;
     await client.del(cache);
 
     res.json({message: "This task is deleted!",deletedTask});     
@@ -109,6 +109,7 @@ export const deleteTask = async(req, res, next)=>{
 export const editTask = async(req, res, next)=>{
    try {
     const id = req.params.id;
+    const userId = req.user.id;
     console.log(id)
     const {task, isCompleted} = req.body;
     console.log(task);
@@ -146,7 +147,7 @@ export const editTask = async(req, res, next)=>{
       );
     }
 
-    const cache = `${process.env.REDIS_CACHE_KEY}:${id}`;
+    const cache = `${process.env.REDIS_CACHE_KEY}:${userId}`;
     await client.del(cache);
 
     res.json({message:"Todo is updated!", updatedTask});

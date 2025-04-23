@@ -15,8 +15,7 @@ A full-featured Node.js application for managing to-do tasks with advanced capab
 - Nodemailer integration for email reminders
 
 ## 📁 Project Structure
-
-src/
+ src/
 │
 ├── auth/                # Authentication logic (JWT, bcrypt)
 │   ├── auth.controller.js
@@ -38,24 +37,18 @@ src/
 │   │   └── multer.js
 │   ├── redis/
 │   │   └── redis.js
-│ 
-│──localTodosStorage.js   # Local todos storage
+│
+├── localTodosStorage.js   # Local todos storage
 │
 ├── user/                # User profile CRUD
 │   ├── user.controller.js
-│   │    
 │   ├── user.route.js
-│   │   
 │   └── user.service.js
-│       
 │
 ├── admin/               # Admin functionality
 │   ├── admin.controller.js
-│   │    
 │   ├── admin.route.js
-│   │   
 │   └── admin.service.js
-│       
 │
 ├── middleware/         # Custom error handling middleware
 │   └── customErrorHandler.js  
@@ -76,9 +69,7 @@ src/
 │   └── db.js
 │
 ├── app.js               # Application setup and configuration
-│
 ├── server.js            # Entry point of the application
-│
 └── logs.txt             # Logs file
 
 ---
@@ -159,21 +150,18 @@ ARCHIVE_DELAY=3600000 // what delay you need actually
 REDIS_CACHE_KEY=todo-cache
 
 ---
-
 ## 📬 Email Reminders (Bull + Nodemailer)
 
 - If a task is not marked completed before a certain time, the user gets a reminder email.
 - Configured using `reminderQueue` with Bull, used nodemailer to actually send the email.
 
 ---
-
 ## 🗃️ Archiving Tasks Automatically
 
 - Completed tasks that are not archived get queued in `archiveQueue`.
 - After a configurable delay, they are archived automatically.
 
 ---
-
 ## 🧪 Validation
 
 - Input data validated with `zod` schemas in `validation/validation.js`
@@ -193,7 +181,6 @@ const taskUpdateSchema = z.object({
 - `npm start` — Start server normally
 
 ---
-
 ## 💬 Notes
 
 - Ensure Redis is running on the configured host/port.
@@ -203,11 +190,9 @@ const taskUpdateSchema = z.object({
 ---
 
 ## 📚 License
-
 MIT – Free to use and modify.
 
 ---
-
 ## 🧑‍💻 Author
 
 Crafted with ❤️ for learning and production-ready applications.

@@ -18,11 +18,10 @@ app.use((req,res,next) => {
 })
 
 app.use(express.json());
-app.use('/api',authRoutes);
+app.use('/api/auth',authRoutes);
 app.use('/api',authenticateUser,todoRoutes);
-app.use('/api',userRoutes)
-app.use('/api',authenticateUser, isAdmin,adminRoutes)
-
+app.use('/api/user',userRoutes)
+app.use('/api/admin',authenticateUser, isAdmin,adminRoutes)
 
 app.get('/',(req, res)=> {
    res.send('Api is working!');

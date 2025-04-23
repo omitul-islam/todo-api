@@ -4,6 +4,8 @@ import reminderQueue from "../../utils/reminder.js";
 import archiveQueue from "../../utils/archiveSchedule.js";
 import { validation } from "../../validation/todoValidation.js";
 
+const delay = process.env.ARCHIVE_DELAY;
+
 export const getTasks = async(req, res,next)=> {
     try {
       const userId = req.user.id;
@@ -19,7 +21,7 @@ export const getTasks = async(req, res,next)=> {
         return res.json({message: "No todos to complete!"}); 
       }
       //console.log("todos",todos);
-      await client.setEx(cache,3600,JSON.stringify(todos));
+      await client.setEx(cache,delay,JSON.stringify(todos));
 
       return res.status(200).json({message:"All the todos are fetched successfully!",Tasks: todos});
     } catch (error) {

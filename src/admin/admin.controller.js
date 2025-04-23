@@ -113,7 +113,8 @@ export const deleteUser = async(req, res, next) => {
          if(!deletedUser) {
             return res.status(404).json({message: "User not found!"});
          }
-         return res.status(200).json({message: "User deleted successfully!", deletedUser});
+         const {password, ...rest} = deletedUser.toObject();
+         return res.status(200).json({message: "User deleted successfully!", deletedUser:rest});
 
       } catch (error) {
          next(error);
@@ -139,7 +140,8 @@ export const updateUser = async(req, res, next) => {
             user.role = role;
         }
         const updatedUser = await updateUserService(user);
-        return res.status(200).json({message: "User updated successfully!", updatedUser});
+        const {password, ...rest} = updatedUser.toObject();
+        return res.status(200).json({message: "User updated successfully!", updatedUser:rest});
          
      } catch (error) {
        next(error); 

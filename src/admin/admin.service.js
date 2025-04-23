@@ -15,7 +15,7 @@ export function deleteTodoService(id) {
     return todoModel.findByIdAndDelete(id);
 }
 
-export const  updateTodoService = async(id, task, isCompleted) => {
+export const  updateTodoService = async(id, task, isCompleted, attachment) => {
      const todo = await todoModel.findById(id);
      
      if(!todo) return null;

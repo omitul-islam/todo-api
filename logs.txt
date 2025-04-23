@@ -443,3 +443,13 @@ at 2025-04-23T10:47:44.986Z -> PUT is occured to: /api/todos
 at 2025-04-23T10:48:09.712Z -> PUT is occured to: /api/todos
 at 2025-04-23T10:48:47.170Z -> PUT is occured to: /api/todos/6808c4f2e6ffd37a3204cc2f
 at 2025-04-23T10:50:34.342Z -> PUT is occured to: /api/todos/6808c4f2e6ffd37a3204cc2f
+at 2025-04-23T11:28:02.261Z -> POST is occured to: /api/auth/register
+at 2025-04-23T11:28:11.310Z -> POST is occured to: /api/auth/register
+at 2025-04-23T11:28:24.786Z -> POST is occured to: /api/auth/login
+at 2025-04-23T11:29:24.638Z -> POST is occured to: /api/auth/login
+at 2025-04-23T11:30:19.955Z -> PUT is occured to: /api/admin/todos/6808927f721396daaad3a01f
+at 2025-04-23T11:32:46.016Z -> PUT is occured to: /api/admin/todos/6808927f721396daaad3a01f
+at 2025-04-23T11:39:03.627Z -> PUT is occured to: /api/admin/todos/6808927f721396daaad3a01f
+at 2025-04-23T12:03:11.891Z -> PUT is occured to: /api/admin/todos/6808927f721396daaad3a01f
+at 2025-04-23T12:05:08.847Z -> PUT is occured to: /api/admin/todos/6808927f721396daaad3a01f
+at 2025-04-23T12:05:43.488Z -> DELETE is occured to: /api/admin/todos/6808927f721396daaad3a01f

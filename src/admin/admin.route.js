@@ -1,5 +1,6 @@
 import express from 'express';
 import { deleteTask, deleteUser, editTask,getTasks, getTasksByUserId, getUserById, getUsers, updateUser } from './admin.controller.js';
+import { upload } from '../todo/multer/multer.js';
 
 const route = express.Router();
 

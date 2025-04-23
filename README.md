@@ -1,221 +1,213 @@
-# Todo API
+# To-Do List API with Authentication, File Uploads, Caching, and Background Jobs
 
-A simple Node.js application that provides a RESTful API for managing a to-do list. The project combines core Node.js concepts with Express.js, API development best practices, and integrates error handling, validation, and logging.
+A full-featured Node.js application for managing to-do tasks with advanced capabilities including JWT-based authentication, role-based access control, file uploads, Redis caching, and background job processing with Bull.
 
-## Table of Contents
-1. [Project Overview](#project-overview)
-2. [Setup Instructions](#setup-instructions)
-3. [API Documentation](#api-documentation)
-   - [GET /todos](#get-todos)
-   - [POST /todos](#post-todos)
-   - [PUT /todos/:id](#put-todosid)
-   - [DELETE /todos/:id](#delete-todosid)
-4. [Core Concepts](#core-concepts)
-5. [Bonus Features](#bonus-features)
+## 🚀 Features
 
----
+- User registration and login using JWT
+- Password encryption using bcrypt
+- Role-based access control (admin/user)
+- File uploads with Multer (attachments for tasks)
+- Redis caching for performance
+- Bull queue for background job processing (reminders, auto-archiving)
+- MongoDB (with Mongoose) for data persistence
+- Zod for API data validation
+- Nodemailer integration for email reminders
 
-## Project Overview
+## 📁 Project Structure
 
-This project serves as a simple to-do list application that:
-- Allows users to perform CRUD operations on tasks.
-- Logs API requests to a file.
-- Uses input validation to ensure that the task data is valid.
-- Implements a custom error-handling middleware for graceful error management.
-
-The project is built with Node.js, Express.js, and stores data in-memory.
-
----
-
-## Setup Instructions
-
-### Prerequisites
-
-- **Node.js** and **npm** installed on your machine.
-- A code editor (e.g., VSCode).
-
-### Steps
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-username/todo-api.git
-   cd todo-api
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Create a `.env` file in the root directory and specify the port number for your server:
-
-   ```bash
-   PORT=5000
-   ```
-
-4. Start the server in development mode:
-
-   ```bash
-   npm run dev
-   ```
-
-   The server will be running on the port defined in `.env` (default is `5000`).
-
----
-
-## API Documentation
-
-### Base URL
-```
-http://localhost:5000/api
-```
-
-### 1. **GET /todos**
-
-- **Description**: Fetch all tasks in the to-do list.
-- **Response**: Returns a list of tasks in JSON format.
-
-#### Example:
-
-```http
-GET /api/todos
-```
-
-Response:
-
-```json
-{
-  "message": "All the todos are fetched successfully!",
-  "Tasks": [
-    {
-      "id": 1,
-      "task": "Learn Node.js",
-      "isCompleted": false
-    },
-    {
-      "id": 2,
-      "task": "Build a to-do app",
-      "isCompleted": false
-    }
-  ]
-}
-```
+src/
+│
+├── auth/                # Authentication logic (JWT, bcrypt)
+│   ├── auth.controller.js
+│   ├── auth.route.js
+│   ├── auth.model.js
+│   ├── auth.service.js      # Authentication service
+│   └── auth.validate.js     # Authentication validation
+│
+├── todo/                # To-do task functionality
+│   ├── controller/
+│   │   └── todoController.js
+│   ├── model/
+│   │   └── todoModel.js
+│   ├── route/
+│   │   └── todo.route.js
+│   ├── service/
+│   │   └── todo.service.js
+│   ├── multer/
+│   │   └── multer.js
+│   ├── redis/
+│   │   └── redis.js
+│ 
+│──localTodosStorage.js   # Local todos storage
+│
+├── user/                # User profile CRUD
+│   ├── user.controller.js
+│   │    
+│   ├── user.route.js
+│   │   
+│   └── user.service.js
+│       
+│
+├── admin/               # Admin functionality
+│   ├── admin.controller.js
+│   │    
+│   ├── admin.route.js
+│   │   
+│   └── admin.service.js
+│       
+│
+├── middleware/         # Custom error handling middleware
+│   └── customErrorHandler.js  
+│
+├── utils/               # Utility functions
+│   ├── archiveSchedule.js
+│   ├── isAdmin.js
+│   ├── jwtUtils.js
+│   ├── reminder.js
+│
+├── uploads/             # File uploads
+│   └── (Your file storage here)
+│
+├── validation/          # Zod schemas for request validation
+│   └── todoValidation.js
+│
+├── db/                  # Database connection
+│   └── db.js
+│
+├── app.js               # Application setup and configuration
+│
+├── server.js            # Entry point of the application
+│
+└── logs.txt             # Logs file
 
 ---
 
-### 2. **POST /todos**
+## 📦 Dependencies
 
-- **Description**: Create a new task. The `task` field must be a string with a minimum length of 10 characters.
-- **Request Body**: JSON with a `task` field.
-
-#### Example:
-
-```http
-POST /api/todos
-```
-
-Request Body:
-
-```json
-{
-  "task": "Learn Express.js"
-}
-```
-
-Response:
-
-```json
-{
-  "message": "Task created successfully!",
-  "task": {
-    "id": 3,
-    "task": "Learn Express.js",
-    "isCompleted": false
-  }
-}
-```
+- **Backend Framework**: `express`
+- **Environment Management**: `dotenv`
+- **Authentication & Security**: `jsonwebtoken`, `bcrypt`
+- **Database**: `mongoose`
+- **Validation**: `zod`
+- **File Upload**: `multer`
+- **Emailing**: `nodemailer`
+- **Job Queueing**: `bull`, `ioredis`
+- **Caching**: `redis`
+- **Email send**: `Nodemailer`
 
 ---
 
-### 3. **PUT /todos/:id**
+## 📄 API Endpoints
 
-- **Description**: Update a task by its ID. You can update the task name and its completion status.
-- **Request Body**: JSON with `task` and/or `isCompleted` fields.
-- **Parameters**: `id` (task ID).
+### 🔐 Auth
+- `POST /api/auth/register` - Register a new user
+- `POST /api/auth/login` - Log in and receive JWT
 
-#### Example:
+### ✅ Todo Routes (User)
+- `GET /api/todos` - Get all tasks for the logged-in user
+- `POST /api/todos` - Add a new task (with optional attachment)
+- `PUT /api/todos/:id` - Update task by ID (supports file upload)
+- `DELETE /api/todos/:id` - Delete task by ID
 
-```http
-PUT /api/todos/1
-```
+### 🛠️ Admin Routes
+- `GET /api/admin/todos` - Get all tasks (admin only)
+- `GET /api/admin/todos/:id` - Get all tasks by a specific user ID
+- `DELETE /api/admin/todos/:id` - Delete task by ID
+- `PUT /api/admin/todos/:id` - Update task by ID (supports file upload)
+- `GET /api/admin/users` - Get all users
+- `GET /api/admin/users/:id` - Get user by ID
+- `DELETE /api/admin/users/:id` - Delete user
+- `PUT /api/admin/users/:id` - Update user
 
-Request Body:
-
-```json
-{
-  "task": "Learn Node.js in depth",
-  "isCompleted": true
-}
-```
-
-Response:
-
-```json
-{
-  "message": "Todo is updated!",
-  "updatedTask": {
-    "id": 1,
-    "task": "Learn Node.js in depth",
-    "isCompleted": true
-  }
-}
-```
+### 👤 Profile Routes (User)
+- `GET /api/user/profile` - Get current user's profile
+- `PUT /api/user/profile` - Update current user's profile
+- `DELETE /api/user/profile` - Delete current user's account
 
 ---
 
-### 4. **DELETE /todos/:id**
+## 🧠 Core Concepts Demonstrated
 
-- **Description**: Delete a task by its ID.
-- **Parameters**: `id` (task ID).
+- Uses `fs` module to log requests
+- Async/await for all database and I/O operations
+- Error handling with custom middleware
+- Middleware to parse JSON, handle authentication
+- Role-based guards using custom middleware
+- JWT Authentication
+- Password hashing and encryption with `bcrypt`
+- Custom validation schema using `zod`
+- Background job processing with Bull
+- Redis caching for frequently accessed data
+- File uploads with Multer
+- User registration and login flow
+- Email notification using nodemailer
+- Database interactions with MongoDB and Mongoose
 
-#### Example:
-
-```http
-DELETE /api/todos/1
-```
-
-Response:
-
-```json
-{
-  "message": "This task is deleted!",
-  "deletedTask": {
-    "id": 1,
-    "task": "Learn Node.js",
-    "isCompleted": false
-  }
-}
-```
+---
+## ⚙️ Environment Variables (`.env`)
+```env
+PORT=5000
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/todo-app?retryWrites=true&w=majority
+JWT_SECRET=your_jwt_secret
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=your_redis_password
+TASKMAILER=your_email@gmail.com
+TASKMAILER_PASSWORD=your_email_password
+ARCHIVE_DELAY=3600000 // what delay you need actually
+REDIS_CACHE_KEY=todo-cache
 
 ---
 
-## Core Concepts
+## 📬 Email Reminders (Bull + Nodemailer)
 
-1. **Logging API requests**: We use the `fs` module to log all incoming API requests to a file (`logs.txt`). This helps keep track of the requests made to the server.
-2. **Promise & Async/Await & callback**: The `POST` route handle promises and async operations and callbacks, including task creation.
-3. **Error Handling Middleware**: A global error handler is used to catch errors thrown during API calls and respond with meaningful error messages.
-
----
-
-## Bonus Features
-
-1. **Input Validation**: Task creation and updating are validated using the `Zod` library. It ensures that task names are strings with a minimum length of 10 characters and also it ensures that isCompleted takes a boolean value.
-2. **Custom Error Handling**: If any route encounters an error, it is passed to the custom error handler, which sends back appropriate error messages.
+- If a task is not marked completed before a certain time, the user gets a reminder email.
+- Configured using `reminderQueue` with Bull, used nodemailer to actually send the email.
 
 ---
 
-## License
+## 🗃️ Archiving Tasks Automatically
 
-MIT License
+- Completed tasks that are not archived get queued in `archiveQueue`.
+- After a configurable delay, they are archived automatically.
+
+---
+
+## 🧪 Validation
+
+- Input data validated with `zod` schemas in `validation/validation.js`
+- Example schema:
+
+```js
+const taskUpdateSchema = z.object({
+  task: z.string().min(10).optional(),
+  isCompleted: z.boolean().optional()
+});
+
+---
+
+## 🛠️ Scripts
+
+- `npm run dev` — Start server in development mode
+- `npm start` — Start server normally
+
+---
+
+## 💬 Notes
+
+- Ensure Redis is running on the configured host/port.
+- Use `Postman` or similar to test protected endpoints with JWTs.
+- Uploaded files are accessible via the path returned in the response.
+
+---
+
+## 📚 License
+
+MIT – Free to use and modify.
+
+---
+
+## 🧑‍💻 Author
+
+Crafted with ❤️ for learning and production-ready applications.

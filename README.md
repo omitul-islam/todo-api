@@ -137,7 +137,7 @@ A full-featured Node.js application for managing to-do tasks with advanced capab
 
 ---
 ## ⚙️ Environment Variables (`.env`)
-```env```
+```env
 PORT=5000
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/todo-app?retryWrites=true&w=majority
 JWT_SECRET=your_jwt_secret
@@ -148,7 +148,7 @@ TASKMAILER=your_email@gmail.com
 TASKMAILER_PASSWORD=your_email_password
 ARCHIVE_DELAY=3600000 // what delay you need actually
 REDIS_CACHE_KEY=todo-cache
-
+```
 ---
 ## 📬 Email Reminders (Bull + Nodemailer)
 

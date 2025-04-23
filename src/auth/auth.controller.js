@@ -6,7 +6,8 @@ import bcrypt from 'bcrypt';
 
 export const addUser = async (req, res, next) => {
       try {
-            const { username, email, password,role } = req.body;
+            const { username, email, password } = req.body;
+            const role = 'user';
             const validateData = {
                   username,
                   email,
@@ -52,7 +53,7 @@ export const loginUser = async (req, res, next) => {
             if (err) {
                 return res.status(500).json({ error: "Error signing token" });
             }
-            res.json({ token });
+            res.json({message:"Your token", token });
         })
 
     } catch (error) {

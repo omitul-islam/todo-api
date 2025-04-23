@@ -6,7 +6,7 @@ const route = express.Router();
 
 route.post('/todos', upload.single('attachment') ,addTask);
 route.get('/todos',  getTasks);
-route.put('/todos/:id', editTask);
+route.put('/todos/:id',upload.single('attachment'), editTask);
 route.delete('/todos/:id', deleteTask);
 
 export const todoRoutes = route;

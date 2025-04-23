@@ -6,7 +6,7 @@ const route = express.Router();
 route.get('/todos',getTasks);
 route.get('/todos/:id',getTasksByUserId);
 route.delete('/todos/:id',deleteTask);
-route.put('/todos/:id',editTask);
+route.put('/todos/:id',upload.single('attachment'),editTask);
 
 route.delete('/users/:id',deleteUser);
 route.get('/users',getUsers)

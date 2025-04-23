@@ -90,8 +90,8 @@ export const editTask = async(req, res, next)=>{
       error.error = validatedData.error;
       throw error;
     } 
-
-    const updatedTask = await updateTodoService(id, task, isCompleted);
+    const attachment = req.file ? req.file.path : undefined;
+    const updatedTask = await updateTodoService(id, task, isCompleted, attachment);
     
     if(!updatedTask) {
       const error = new Error("No todo found for this id!");

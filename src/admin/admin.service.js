@@ -27,7 +27,10 @@ export const  updateTodoService = async(id, task, isCompleted) => {
      if(isCompleted !== undefined) {
        todo.isCompleted = isCompleted; 
      }
-
+     
+     if(attachment !== undefined) {
+       todo.attachment = attachment; 
+     }
      console.log(todo); 
      return await todo.save();
 }

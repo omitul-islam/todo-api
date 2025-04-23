@@ -47,11 +47,11 @@
 
 
 import todoModel from "../model/todoModel.js";
-export const getTodos = async (userId) => {
+export const getTodosService = async (userId) => {
     return await todoModel.find({user:userId, archived:false});
 }
 
-export const  createTodo = async({task, userId,attachment}) => {
+export const  createTodoService = async({task, userId,attachment}) => {
     const newTask = {
         task,
         isCompleted: false,
@@ -63,7 +63,7 @@ export const  createTodo = async({task, userId,attachment}) => {
     return await todo.save();
 }
 
-export const  updateTodo = async(id, task, isCompleted) => {
+export const  updateTodoService = async(id, task, isCompleted, attachment) => {
      const todo = await todoModel.findById(id);
      
      if(!todo) return null;
@@ -75,12 +75,15 @@ export const  updateTodo = async(id, task, isCompleted) => {
      if(isCompleted !== undefined) {
        todo.isCompleted = isCompleted; 
      }
+     if(attachment !== undefined) {
+        todo.attachment = attachment; 
+     }
 
      console.log(todo); 
      return await todo.save();
 }
 
-export async function deleteTodo(id) {
+export async function deleteTodoService(id) {
     const todo = todoModel.findById(id);
     if(!todo)return null;
     return await todoModel.findByIdAndDelete(id);

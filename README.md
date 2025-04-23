@@ -15,7 +15,7 @@ A full-featured Node.js application for managing to-do tasks with advanced capab
 - Nodemailer integration for email reminders
 
 ## 📁 Project Structure
-
+```
 src/
 │
 ├── auth/                # Authentication logic (JWT, bcrypt)
@@ -72,7 +72,7 @@ src/
 ├── app.js               # Application setup and configuration
 ├── server.js            # Entry point of the application
 └── logs.txt             # Logs file
-
+```
 ---
 
 ## 📦 Dependencies

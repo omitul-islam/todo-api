@@ -15,7 +15,8 @@ A full-featured Node.js application for managing to-do tasks with advanced capab
 - Nodemailer integration for email reminders
 
 ## 📁 Project Structure
- src/
+
+src/
 │
 ├── auth/                # Authentication logic (JWT, bcrypt)
 │   ├── auth.controller.js
@@ -172,6 +173,7 @@ const taskUpdateSchema = z.object({
   task: z.string().min(10).optional(),
   isCompleted: z.boolean().optional()
 });
+```
 
 ---
 

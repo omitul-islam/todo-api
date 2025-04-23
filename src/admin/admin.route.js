@@ -7,6 +7,7 @@ route.get('/todos',getTasks);
 route.get('/todos/:id',getTasksByUserId);
 route.delete('/todos/:id',deleteTask);
 route.put('/todos/:id',editTask);
+
 route.delete('/users/:id',deleteUser);
 route.get('/users',getUsers)
 route.get('/users/:id',getUserById)

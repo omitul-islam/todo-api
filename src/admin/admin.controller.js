@@ -1,16 +1,26 @@
 import userModel from "../auth/auth.model.js";
 import client from "../todo/redis/redis.js";
+import archiveQueue from "../utils/archiveSchedule.js";
 import { validation } from "../validation/todoValidation.js";
-import { deleteTodoService, getTodoByIdService, getTodosService, getUserByIdService, getUsersService, updateUserService } from "./admin.service.js";
+import { deleteTodoService, getTodoByIdService, getTodosService, getUserByIdService, getUsersService, updateTodoService, updateUserService } from "./admin.service.js";
 
 export const getTasks = async(req, res,next)=> {
     try {
-      const id = req.params.id;  
+      const userId = req.user.id;
+      const cache = `${process.env.REDIS_CACHE_KEY} : ${userId}`;
+      const cachedTodos = await client.get(cache);
+      if(cachedTodos) {
+        console.log("Cache found!");
+        return res.status(200).json({message:"Todo fetched successfully!", Tasks: JSON.parse(cachedTodos)});
+      }
+
       const todos = await getTodosService();
       console.log("todos",todos);
       if(!todos || todos.length === 0) {
         return res.json({message: "No todos to complete!"}); 
       }
+      const delay = process.env.ARCHIVE_DELAY;
+      await client.setEx(cache,delay,JSON.stringify(todos));
       return res.status(200).json({message:"All the todos are fetched successfully!",Tasks: todos});
     } catch (error) {
       next(error);
@@ -19,23 +29,22 @@ export const getTasks = async(req, res,next)=> {
 
 export const getTasksByUserId = async(req, res,next)=> {
     try {
-      const userId = req.user.id; 
       const id = req.params.id;  
       const cache = `${process.env.REDIS_CACHE_KEY} : ${id}`;
       const cachedTodos = await client.get(cache);
       if(cachedTodos) {
         console.log("Cache found!");
-        return res.status(200).json({message:"All the todos are fetched successfully!", Tasks: JSON.parse(cachedTodos)});
+        return res.status(200).json({message:"Todo fetched successfully!", Tasks: JSON.parse(cachedTodos)});
       }
-
-      const todos = await getTodoByIdService(userId);
+      const todos = await getTodoByIdService(id);
       console.log("todos",todos);
 
       if(!todos || todos.length === 0) {
         return res.json({message: "No todos to complete!"}); 
       }
-      await client.setEx(cache,3600,JSON.stringify(todos));
-      return res.status(200).json({message:"All the todos are fetched successfully!",Tasks: todos});
+      const delay = process.env.ARCHIVE_DELAY;
+      await client.setEx(cache,delay,JSON.stringify(todos));
+      return res.status(200).json({message:"Todo fetched successfully!",Tasks: todos});
     } catch (error) {
       next(error);
     }
@@ -52,6 +61,10 @@ export const deleteTask = async(req, res, next)=>{
     }
     const cache = `${process.env.REDIS_CACHE_KEY}:${id}`;
     await client.del(cache);
+
+    const userId = req.user.id;
+    const cacheFromAlltasks = `${process.env.REDIS_CACHE_KEY} : ${userId}`;
+    await client.del(cacheFromAlltasks);
 
     res.json({message: "This task is deleted!",deletedTask});     
   } catch (error) {
@@ -78,7 +91,7 @@ export const editTask = async(req, res, next)=>{
       throw error;
     } 
 
-    const updatedTask = await updateTodo(id, task, isCompleted);
+    const updatedTask = await updateTodoService(id, task, isCompleted);
     
     if(!updatedTask) {
       const error = new Error("No todo found for this id!");
@@ -99,6 +112,10 @@ export const editTask = async(req, res, next)=>{
 
     const cache = `${process.env.REDIS_CACHE_KEY}:${id}`;
     await client.del(cache);
+
+    const userId = req.user.id;
+    const cacheFromAlltasks = `${process.env.REDIS_CACHE_KEY} : ${userId}`;
+    await client.del(cacheFromAlltasks);
 
     res.json({message:"Todo is updated!", updatedTask});
    } catch (error) {

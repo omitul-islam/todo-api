@@ -137,7 +137,7 @@ A full-featured Node.js application for managing to-do tasks with advanced capab
 
 ---
 ## ⚙️ Environment Variables (`.env`)
-```env
+```env```
 PORT=5000
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/todo-app?retryWrites=true&w=majority
 JWT_SECRET=your_jwt_secret

@@ -143,8 +143,8 @@ src/
 PORT=5000
 MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/todo-app?retryWrites=true&w=majority
 JWT_SECRET=your_jwt_secret
-REDIS_HOST=localhost
-REDIS_PORT=6379
+REDIS_HOST=your_redis_host_url   # like redis-12345.c8.us-east-1-3.ec2.cloud.redislabs.com
+REDIS_PORT=your_redis_port       # port like 12345 from cloud
 REDIS_PASSWORD=your_redis_password
 TASKMAILER=your_email@gmail.com
 TASKMAILER_PASSWORD=your_email_password

@@ -90,7 +90,7 @@ export const editTask = async(req, res, next)=>{
       error.error = validatedData.error;
       throw error;
     } 
-    const attachment = req.file ? req.file.path : undefined;
+    const attachment = req.file ? `/uploads/${req.file.filename}` : null;
     const updatedTask = await updateTodoService(id, task, isCompleted, attachment);
     
     if(!updatedTask) {

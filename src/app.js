@@ -7,6 +7,7 @@ import { authenticateUser } from './utils/jwtUtils.js';
 import { adminRoutes } from './admin/admin.route.js';
 import { isAdmin } from './utils/isAdmin.js';
 import { userRoutes } from './user/user.route.js';
+import path from 'path';
 
 const app = express();
 
@@ -18,6 +19,9 @@ app.use((req,res,next) => {
 })
 
 app.use(express.json());
+app.use('/uploads', express.static(path.resolve('src', 'uploads')));
+
+
 app.use('/api/auth',authRoutes);
 app.use('/api',authenticateUser,todoRoutes);
 app.use('/api/user',userRoutes)

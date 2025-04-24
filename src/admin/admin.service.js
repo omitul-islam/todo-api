@@ -6,7 +6,7 @@ export const getTodosService = async () => {
 }
 
 export const getTodoByIdService = async (id) => {
-    return await todoModel.find({user:id, archived:false});
+    return await todoModel.find({user:id}).populate('user').select('-password');
 }
 
 export function deleteTodoService(id) {

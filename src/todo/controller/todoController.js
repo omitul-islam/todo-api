@@ -45,7 +45,7 @@ export const addTask = async(req, res, next) => {
      } 
      console.log(req.body)
      const userId = req.user.id;
-     const attachment = req.file ? req.file.path : null;
+     const attachment = req.file ? `/uploads/${req.file.filename}` : null;
      const newTask = await createTodoService({task, userId, attachment});
 
      console.log(newTask);
@@ -131,7 +131,7 @@ export const editTask = async(req, res, next)=>{
       throw error;
     } 
 
-    const attachment = req.file ? req.file.path : undefined;
+    const attachment = req.file ? `/uploads/${req.file.filename}` : null;
     const updatedTask = await updateTodoService(id, task, isCompleted, attachment);
     
     if(!updatedTask) {

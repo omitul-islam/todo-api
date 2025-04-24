@@ -2,7 +2,7 @@ import client from "../redis/redis.js";
 import reminderQueue from "../../utils/reminder.js";
 import archiveQueue from "../../utils/archiveSchedule.js";
 import { validation } from "../../validation/todoValidation.js";
-import { createTodoService, deleteTodoService, getTodosService, updateTodoService } from "../service/todoService.js";
+import { createTodoService, deleteTodoService, getArchivedTasksService, getTodosService, updateTodoService } from "../service/todoService.js";
 
 const delay = process.env.ARCHIVE_DELAY;
 
@@ -27,6 +27,21 @@ export const getTasks = async(req, res,next)=> {
     } catch (error) {
       next(error);
     }
+}
+
+export const getArchivedTasks = async(req, res,next)=> {
+  try {
+    const userId = req.user.id;
+
+    const todos = await getArchivedTasksService(userId);
+    if(!todos || todos.length === 0) {
+      return res.json({message: "No todos are archived!"}); 
+    }
+
+    return res.status(200).json({message:"All the Archived todos are fetched successfully!",Tasks: todos});
+  } catch (error) {
+    next(error);
+  }
 }
 
 export const addTask = async(req, res, next) => {

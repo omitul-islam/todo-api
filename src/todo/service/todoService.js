@@ -51,6 +51,10 @@ export const getTodosService = async (userId) => {
     return await todoModel.find({user:userId, archived:false});
 }
 
+export const getArchivedTasksService = async (userId) => {
+    return await todoModel.find({user:userId, archived:true});
+}
+
 export const  createTodoService = async({task, userId,attachment}) => {
     const newTask = {
         task,

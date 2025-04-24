@@ -1,4 +1,5 @@
 import userModel from "../auth/auth.model.js";
+import todoModel from "../todo/model/todoModel.js";
 import client from "../todo/redis/redis.js";
 import archiveQueue from "../utils/archiveSchedule.js";
 import { validation } from "../validation/todoValidation.js";
@@ -53,15 +54,18 @@ export const getTasksByUserId = async(req, res,next)=> {
 export const deleteTask = async(req, res, next)=>{
   try {
     const id = req.params.id;
+    
+    const task = await todoModel.findById(id);
+    const cache = `${process.env.REDIS_CACHE_KEY}:${task.user}`;
+    await client.del(cache);
+
     const deletedTask = await deleteTodoService(id);
     if(!deletedTask) {
       const error = new Error("Todo not found for this id!");
       error.status = 404;
       throw error; 
     }
-    const cache = `${process.env.REDIS_CACHE_KEY}:${id}`;
-    await client.del(cache);
-
+    
     const userId = req.user.id;
     const cacheFromAlltasks = `${process.env.REDIS_CACHE_KEY} : ${userId}`;
     await client.del(cacheFromAlltasks);
@@ -110,7 +114,8 @@ export const editTask = async(req, res, next)=>{
       );
     }
 
-    const cache = `${process.env.REDIS_CACHE_KEY}:${id}`;
+    const Task = await todoModel.findById(id);
+    const cache = `${process.env.REDIS_CACHE_KEY}:${Task.user}`;
     await client.del(cache);
 
     const userId = req.user.id;

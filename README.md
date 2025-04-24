@@ -98,6 +98,7 @@ src/
 
 ### ✅ Todo Routes (User)
 - `GET /api/todos` - Get all tasks for the logged-in user
+- `GET /api/todos/archived` - Get all archived tasks for the logged-in user
 - `POST /api/todos` - Add a new task (with optional attachment)
 - `PUT /api/todos/:id` - Update task by ID (supports file upload)
 - `DELETE /api/todos/:id` - Delete task by ID
